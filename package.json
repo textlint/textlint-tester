@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/textlint/textlint-tester/issues"
   },
-  "version": "0.4.1",
+  "version": "0.5.1-0",
   "description": "testing tool for textlint rule.",
   "main": "lib/textlint-tester.js",
   "files": [
@@ -33,7 +33,7 @@
     "testing"
   ],
   "dependencies": {
-    "textlint": "^5.0.0"
+    "textlint": "^5.5.3"
   },
   "devDependencies": {
     "babel": "^5.8.23",

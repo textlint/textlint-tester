@@ -1,5 +1,6 @@
 // LICENSE : MIT
 "use strict";
+import assert from "assert";
 import {testValid, testInvalid} from "./test-util";
 import {TextLintCore} from "textlint";
 const describe = (typeof global.describe === "function") ? global.describe : function (text, method) {
@@ -10,6 +11,22 @@ const it = (typeof global.it === "function") ? global.it : function (text, metho
     return method.apply(this);
 };
 
+/**
+ * get fixer function from ruleCreator
+ * if not found, throw error
+ * @param {Function} ruleCreator
+ * @param {string} ruleName
+ * @returns {Function} fixer function
+ */
+function assertHasFixer(ruleCreator, ruleName) {
+    if (typeof ruleCreator.fixer === "function") {
+        return;
+    }
+    if (typeof ruleCreator === "function") {
+        return;
+    }
+    throw new Error("Not found `fixer` function in the ruleCreator: " + ruleName);
+}
 export default class TextLintTester {
     testValidPattern(ruleName, rule, valid) {
         let text = valid.text || valid;
@@ -38,17 +55,15 @@ export default class TextLintTester {
         it(text, ()=> {
             return testInvalid(textlint, text, errors);
         });
-    }
-
-    testState(ruleName, rule, valid, invalid) {
-        let validListNoOptions = valid.filter(state => {
-            return state.options === undefined;
-        });
-        let invalidListNoOptions = invalid.filter(state => {
-            return state.options === undefined;
-        });
-        if (validListNoOptions.length === 0 || invalidListNoOptions.length === 0) {
-            return;
+        // --fix
+        if (invalid.hasOwnProperty("output")) {
+            it(`Fixer: ${text}`, ()=> {
+                assertHasFixer(rule, ruleName);
+                return textlint.fixText(text, ".md").then(result => {
+                    const output = invalid.output;
+                    assert.strictEqual(result.output, output);
+                });
+            });
         }
     }
 
@@ -67,7 +82,6 @@ export default class TextLintTester {
             valid.forEach(state => {
                 this.testValidPattern(ruleName, rule, state);
             });
-            this.testState(ruleName, rule, valid, invalid);
         });
     }
 }
