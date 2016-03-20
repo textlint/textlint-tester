@@ -9,6 +9,10 @@ tester.run("no-todo", noTodo, {
         "string, test desu",
         {
             text: "日本語 is Japanese."
+        },
+        {
+            text: "- [ ] This text is parsed as plain text.",
+            ext: ".txt"
         }
     ],
     invalid: [
@@ -27,6 +31,17 @@ tester.run("no-todo", noTodo, {
             errors: [
                 {
                     message: "found TODO: 'TODO: string'",
+                    line: 1,
+                    column: 1
+                }
+            ]
+        },
+        {
+            text: "- [ ] TODO: this text is parsed as plain text.",
+            ext: ".txt",
+            errors: [
+                {
+                    message: "found TODO: '- [ ] TODO: this text is parsed as plain text.'",
                     line: 1,
                     column: 1
                 }
