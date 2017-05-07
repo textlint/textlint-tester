@@ -1,5 +1,7 @@
 # textlint-tester [![Build Status](https://travis-ci.org/textlint/textlint-tester.svg?branch=master)](https://travis-ci.org/textlint/textlint-tester)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/textlint/textlint-tester.svg)](https://greenkeeper.io/)
+
 [Mocha](http://mochajs.org/ "Mocha") test helper library for [textlint](https://github.com/textlint/textlint "textlint") rule.
 
 ## Installation
